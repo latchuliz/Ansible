@@ -1,0 +1,78 @@
+---
+- hosts: nodes
+  become: yes
+  tasks:
+  - name: To Ensure Nginx is at the Latest Version
+    apt: name=nginx state=latest
+  - name: To Start Nginx
+    service:
+        name: nginx
+        state: started
+  - name: To Copy the Nginx File and Restart Nginx
+    copy:
+      src: /etc/ansible/static-site/static-site.cfg
+      dest: /etc/nginx/sites-available/static-site.cfg
+  - name: To Create a Symlink
+    file:
+      src: /etc/nginx/sites-available/static-site.cfg
+      dest: /etc/nginx/sites-enabled/default
+      state: link
+  - name: To Copy the contents of the Website
+    copy:
+      src: /etc/ansible/static-site/
+      dest: /root/
+  - name: To Restart a Nginx
+    service:
+      name: nginx
+      state: restarted
+  - name: To Add apt key for nodesource
+    apt_key:
+      state: present
+      url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+
+  - name: To Add a Repo for nodesource
+    apt_repository:
+      repo: 'deb https://deb.nodesource.com/node_8.x {{ ansible_distribution_release }} main'
+      update_cache: yes
+
+  - name: To Install a Nodejs
+    apt:
+      state: present
+      name: nodejs
+
+  - name: To install PM2
+    npm:
+      state: present
+      name: pm2
+      global: yes
+
+  - name: To Install a Zip
+    apt:
+      state: present
+      name: zip
+
+  - name: To Install a Unzip
+    apt:
+      state: present
+      name: unzip
+
+  - name: To Extract a Project to Remote System
+    unarchive:
+      src: /etc/ansible/tracker.zip
+      dest: /root/
+
+  - name: To Copy a .env file from Source to Project Directory
+    copy:
+      src: /etc/ansible/.env
+      dest: /root/tracker/
+    with_fileglob:
+      - /etc/ansible/.*
+
+  - name: To run a NPM Modules on Project Directory
+    shell: sudo npm i
+    register: npm_finished
+    args:
+      chdir: /root/tracker
+
+  - name: To Start a App
+    command: chdir=/root/tracker/ pm2 start /root/tracker/index.js --name Shenll-Tracker

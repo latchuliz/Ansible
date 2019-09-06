@@ -1,0 +1,27 @@
+---
+- hosts: localhost
+  connection: local
+  become: yes
+  gather_facts: False
+
+  vars:
+      region: us-east-1
+      instance_type: t2.micro
+      ami: ami-0cfee17793b08a293
+      keypair: Aws15-PrivateKey
+
+  tasks:
+    - name: To Launch EC2 Instance
+      ec2:
+         aws_access_key: 'AKIAIKRLX4RELX2XKKNA'
+         aws_secret_key: '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'
+         key_name: '{{ keypair }}'
+         group: launch-wizard-12
+         instance_type: "{{ instance_type }}"
+         image: "{{ ami }}"
+         wait: true
+         region: "{{ region }}"
+         count: 1
+         vpc_subnet_id: subnet-08fe0b45
+         assign_public_ip: yes
+      register: ec2

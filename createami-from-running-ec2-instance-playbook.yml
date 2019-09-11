@@ -1,0 +1,27 @@
+- hosts: localhost
+  connection: local
+  become: yes
+  gather_facts: no
+  vars:
+    region: us-east-1
+    ins_name: Sample
+    ami_name: Sample
+  tasks:
+    - name: To Get Instance Id
+      command: "aws ec2 describe-instances
+                --filters Name=tag:Name,Values={{ ins_name }}
+                --query 'Reservations[0].Instances[0].InstanceId'
+                --output text"
+      register: instanceid
+
+    - name: To Create AMI
+      ec2_ami:
+        instance_id: "{{ instanceid.stdout }}"
+        region: "{{ region }}"
+        wait: yes
+        name: "{{ ami_name }}"
+      register: ami
+      when: instanceid.stdout!="None"
+
+    - debug: var=ami
+

@@ -1,0 +1,23 @@
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  vars_files:
+   - aws-creds.yml
+
+  tasks:
+  - name: To Delete S3 Bucket
+    aws_s3:
+      bucket: shenllbucket01
+      mode: delete
+
+  - name: To Delete S3 Bucket
+    aws_s3:
+      bucket: shenllbucket02
+      mode: delete
+
+  - name: To Delete S3 Bucket
+    aws_s3:
+      bucket: shenllbucket03
+      mode: delete
+

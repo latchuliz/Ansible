@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  vars_files:
+   - aws-creds.yml
+#  vars:
+#    bucketname: shenllbucket03
+  tasks:
+    - name: To Delete a object in S3 Bucket
+      aws_s3:
+        bucket: shenllbucket03
+        object: /dir1/Latchu.jpg
+        mode: delobj
+

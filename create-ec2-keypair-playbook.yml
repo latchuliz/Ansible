@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  connection: local
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: To Create a Key-Pair
+      ec2_key:
+        name: sampleprivatekey
+        region: us-east-1
+      register: ec2_key_result
+
+    - name: To Save Private Key Locally
+      copy: content="{{ ec2_key_result.key.private_key }}" dest="/etc/ansible/sampleprivatekey.pem" mode=0400
+      when: ec2_key_result.changed
+

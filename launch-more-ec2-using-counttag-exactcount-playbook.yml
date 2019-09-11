@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    region: us-east-1
+  tasks:
+    - name: EC2 Basic Provisioning
+      ec2:
+        region: "{{ region }}"
+        key_name: sampleprivatekey
+        instance_type: t2.micro
+        image: ami-0b69ea66ff7391e80
+        wait: yes
+        group: webserver
+        instance_tags:
+          group: webserver
+        exact_count: 2
+        count_tag:
+          group: webserver
+

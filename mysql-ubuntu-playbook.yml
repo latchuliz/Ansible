@@ -1,0 +1,31 @@
+---
+- hosts: nodes
+  become: yes
+  tasks:
+  - name: To Upgrade
+    apt:
+      name: aptitude
+      state: present
+    apt: update_cache=yes upgrade=safe cache_valid_time=3600
+  - name: To Install MYSQL Python
+    apt:
+      name: python-mysqldb
+      state: present
+  - name: To Install MYSQL Server
+    apt:
+      name: mysql-server
+      state: present
+  - name: To Install MYSQL Client
+    apt:
+      name: mysql-client
+      state: present
+  - name: To Install MYSQL Common
+    apt:
+      name: mysql-common
+      state: present
+  - name: To Ensure MYSQL Always Starts
+    service:
+      name: mysql
+      state: started
+      enabled: yes
+

@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    region: us-east-1
+    allowed_ip: 18.209.197.33/32
+  tasks:
+  - name: To Create a DataBase SecurityGroup
+    ec2_group:
+      region: "{{ region }}"
+      name: database_sg
+      description: SecurityGroup for DataBase Host
+      rules:
+        - proto: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: "{{ allowed_ip }}"
+          rule_desc: allow this ip on port 80
+        - proto: tcp
+          from_port: 3306
+          to_port: 3306
+          rule_desc: allow all on port 3306
+          group_name: webserver_sg
+          group_desc: ec2 group
+      rules_egress:
+        - proto: all
+          cidr_ip: 0.0.0.0/0
+          rule_desc: allow all
+

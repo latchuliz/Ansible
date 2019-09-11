@@ -1,0 +1,19 @@
+  GNU nano 2.9.3           terminate-linuxec2-playbook.yml                      
+
+- name: To Terminate EC2 Instance
+  hosts: localhost
+  connection: local
+  vars:
+    instance_ids:
+      - 'i-0281f387760bdc8dc'
+    region: us-east-1
+  tasks:
+  - name: To Terminate Ec2 Instance
+    ec2:
+      region: '{{ region }}'
+      instance_ids: '{{ instance_ids  }}'
+      state: absent
+      wait: True
+      vpc_subnet_id: subnet-9c2f0fb2
+
+

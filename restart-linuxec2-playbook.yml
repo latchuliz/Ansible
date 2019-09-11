@@ -1,0 +1,17 @@
+
+- name: To Restart EC2 Instance
+  hosts: localhost
+  connection: local
+  vars:
+    instance_ids:
+      - 'i-0281f387760bdc8dc'
+    region: us-east-1
+  tasks:
+  - name: To Restart Ec2 Instance
+    ec2:
+      region: '{{ region }}'
+      instance_ids: '{{ instance_ids  }}'
+      state: running
+      wait: True
+      vpc_subnet_id: subnet-9c2f0fb2
+

@@ -1,0 +1,42 @@
+---
+- hosts: nodes
+  become: yes
+  tasks:
+  - name: To Install a Nginx Webserver
+    apt: pkg=nginx state=installed update_cache=true
+  - name: To Start Nginx Webserver
+    service:
+        name: nginx
+        state: started
+
+  - name: To Add apt key for nodesource
+    apt_key:
+      state: present
+      url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+
+  - name: To Add a repo for nodesource
+    apt_repository:
+      repo: 'deb https://deb.nodesource.com/node_8.x {{ ansible_distribution_release }} main'
+      update_cache: yes
+
+  - name: To Install a Nodejs
+    apt:
+      state: present
+      name: nodejs
+
+  - name: To Install a PM2
+    npm:
+      state: present
+      name: pm2
+      global: yes
+
+  - name: To Install a Zip
+    apt:
+      state: present
+      name: zip
+
+  - name: To Install a Unzip
+    apt:
+      state: present
+      name: unzip
+

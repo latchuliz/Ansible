@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  vars_files:
+   - aws-creds.yml
+  vars:
+    bucketname: shenllbucket01
+  tasks:
+    - name: To Create An S3 Bucket
+      s3_bucket:
+#        aws_access_key: "{{ access_key }}"
+#        aws_secret_key: "{{ secret_key }}"
+        name: shenllbucket01
+#        mode: create
+

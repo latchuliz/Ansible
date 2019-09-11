@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  gather_facts: no
+  become: yes
+  vars:
+    region: us-east-1
+  tasks:
+    - name: EC2 Provisioning with Provisioned gp2 EBS Volume
+      ec2:
+        region: "{{ region }}"
+        key_name: sampleprivatekey
+        instance_type: t2.micro
+        image: ami-07d0cf3af28718ef8
+        group: webserver
+        volumes:
+          - device_name: /dev/sda1
+            device_type: io1
+            iops: 1000
+            volume_size: 500
+            delete_on_termination: true
+

@@ -1,0 +1,33 @@
+---
+- hosts: nodes
+  become: yes
+  tasks:
+    - name: To Install a LAMP Stack
+      become: yes
+      become_user: root
+      apt:
+         pkg:
+           - apache2
+           - mysql-server
+           - php7.0
+           - php7.0-mysql
+         state: present
+         update_cache: yes
+
+    - name: To Start Apache Webserver
+      become: yes
+      become_user: root
+      service: 
+          name: apache2
+          state: started
+          enabled: yes
+
+    - name: To Start MySQL Service
+      become: yes
+      become_user: root
+      service:
+          name: mysql
+          state: started
+          enabled: yes
+
+

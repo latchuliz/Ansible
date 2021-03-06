@@ -1,0 +1,13 @@
+- hosts: localhost
+  tasks:
+  - name: AWS OS provisioning
+    ec2:
+      key_name: NagiosWindowsServerPrivateKey
+      instance_type: t2.micro
+      image: ami-0359021ed5937bca1
+      wait: yes
+      region: ap-south-1
+      group_id: sg-0033f7f239267f97c
+      count: 1
+      vpc_subnet_id: subnet-48cfbf04
+      assign_public_ip: yes
